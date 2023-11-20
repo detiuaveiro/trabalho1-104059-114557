@@ -495,6 +495,25 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
   }
 }
 
+int ImageMatchSubImage(Image img1, int x, int y, Image img2) { ///
+  assert (img1 != NULL);
+  assert (img2 != NULL);
+  assert (ImageValidPos(img1, x, y));
+
+  // Compare os pixels da subimagem img2 com a parte correspondente de img1 na posição (x, y).
+  for (int j = 0; j < img2->height; j++) {
+    for (int i = 0; i < img2->width; i++) {
+      uint8 pixel1 = ImageGetPixel(img1, x + i, y + j);
+      uint8 pixel2 = ImageGetPixel(img2, i, j);
+      if (pixel1 != pixel2) {
+        return 0; // Os pixels não coincidem.
+      }
+    }
+  }
+
+  return 1; // A subimagem coincide com a parte de img1 na posição (x, y).
+}
+
 int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 { ///
   assert(img1 != NULL);
