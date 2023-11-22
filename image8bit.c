@@ -364,7 +364,7 @@ void ImageBrighten(Image img, double factor)
       // Satura o valor se ele exceder o valor máximo.
       if (newPixel > maxval)
       {
-        newPixel = maxval;
+        newPixel = round(maxval);
       }
 
       ImageSetPixel(img, x, y, newPixel);
