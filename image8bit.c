@@ -359,7 +359,7 @@ void ImageBrighten(Image img, double factor)
     {
       uint8 currentPixel = ImageGetPixel(img, x, y);
       // Calcula o novo valor do pixel multiplicando pelo fator.
-      uint8 newPixel = (uint8)(currentPixel * factor)+10;
+      uint8 newPixel = (uint8)(currentPixel * factor);
 
       // Satura o valor se ele exceder o valor máximo.
       if (newPixel > maxval)
