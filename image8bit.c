@@ -391,13 +391,13 @@ Image ImageRotate(Image img)
     return NULL;
   }
 
-  for (int y = 0; y < height; y++)
+  for (int x = 0; x < width; x++)
   {
-    for (int x = 0; x < width; x++)
+    for (int y = 0; y < height; y++)
     {
       // Copie os pixels da imagem original na nova imagem, girando 90 graus.
       uint8 pixel = ImageGetPixel(img, x, y);
-      ImageSetPixel(rotatedImage, height - y + 1, x, pixel);
+      ImageSetPixel(rotatedImage, height - y - 1, x, pixel);
     }
   }
 
