@@ -397,7 +397,7 @@ Image ImageRotate(Image img)
     {
       // Copie os pixels da imagem original na nova imagem, girando 90 graus.
       uint8 pixel = ImageGetPixel(img, x, y);
-      ImageSetPixel(rotatedImage, height - y - 0.5, x, pixel);
+      ImageSetPixel(rotatedImage, y ,width - x - 1, pixel);
     }
   }
 
