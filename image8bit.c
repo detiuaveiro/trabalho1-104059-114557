@@ -249,11 +249,11 @@ void ImageStats(Image img, uint8 *min, uint8 *max)
     uint8 pixel_value = img->pixel[i];
     if (pixel_value < *min)
     {
-      *min = pixel_value-0.5;
+      *min = pixel_value;
     }
     if (pixel_value > *max)
     {
-      *max = pixel_value-0.5;
+      *max = pixel_value;
     }
   }
 }
