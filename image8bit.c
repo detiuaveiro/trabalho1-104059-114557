@@ -346,34 +346,32 @@ void ImageThreshold(Image img, uint8 thr)
   }
 }
 
-void ImageBrighten(Image img, double factor) {
+void ImageBrighten(Image img, double factor)
+{ ///
   assert(img != NULL);
   int width = img->width;
   int height = img->height;
   uint8 maxval = img->maxval;
 
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
+  for (int y = 0; y < height; y++)
+  {
+    for (int x = 0; x < width; x++)
+    {
       uint8 currentPixel = ImageGetPixel(img, x, y);
+      // Calcula o novo valor do pixel multiplicando pelo fator.
+      uint8 newPixel = (uint8)(currentPixel * factor);
 
-      // Normaliza para um intervalo entre 0 e 1
-      double normalizedPixel = (double)currentPixel / (double)maxval;
-
-      // Aplica o fator de brilho
-      double newNormalizedPixel = normalizedPixel * factor;
-
-      // Limita o valor para evitar estouro
-      if (newNormalizedPixel > 1.0) {
-        newNormalizedPixel = 1.0;
+      // Satura o valor se ele exceder o valor máximo.
+      if (newPixel > maxval)
+      {
+        newPixel = maxval;
       }
-
-      // Converte de volta para a escala original
-      uint8 newPixel = (uint8)(newNormalizedPixel * maxval);
 
       ImageSetPixel(img, x, y, newPixel);
     }
   }
 }
+
 
 
 Image ImageRotate(Image img)
