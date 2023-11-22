@@ -367,7 +367,7 @@ void ImageBrighten(Image img, double factor)
         newPixel = maxval;
       }
 
-      ImageSetPixel(img, round(x), round(y), newPixel);
+      ImageSetPixel(img, x, y, newPixel);
     }
   }
 }
