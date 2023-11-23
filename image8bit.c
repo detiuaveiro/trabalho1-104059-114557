@@ -491,8 +491,11 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha)
       uint8 pixel1 = ImageGetPixel(img1, x + i, y + j);
       uint8 pixel2 = ImageGetPixel(img2, i, j);
       // Calcule o novo pixel misturado usando alpha.
-      uint8 blendedPixel = (uint8)(alpha * pixel2 + (1 - alpha) * pixel1);
-      ImageSetPixel(img1, x + i, y + j, blendedPixel+0.5);
+      double blendedPixel = (alpha * pixel2 + (1 - alpha) * pixel1) + 0.5;
+      if (blendedPixel > img1->maxval) {
+        blendedPixel = img1->maxval;
+      }
+      ImageSetPixel(img1, x + i, y + j, (uint8)blendedPixel);
     }
   }
 }
