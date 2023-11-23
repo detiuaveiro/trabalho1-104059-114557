@@ -545,6 +545,14 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   return 0; // Nenhuma correspondência encontrada.
 }
 
+void ImageFree(Image img) {
+    // Liberar a memória alocada para a imagem 'img'
+    if (img != NULL) {
+        free(img->data); // Liberar os dados da imagem
+        free(img);       // Liberar a estrutura da imagem
+    }
+}
+
 void ImageBlur(Image img, int dx, int dy) {
     assert(img != NULL);
     int width = img->width;
