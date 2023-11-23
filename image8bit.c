@@ -5,7 +5,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "instrumentation.h"
 
 const uint8 PixMax = 255;
@@ -546,43 +545,48 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
   return 0; // Nenhuma correspondência encontrada.
 }
 
-void ImageBlur(Image img, int dx, int dy) {
-    assert(img != NULL);
-    int width = img->width;
-    int height = img->height;
+void ImageBlur(Image img, int dx, int dy)
+{ ///
+  assert(img != NULL);
+  int width = img->width;
+  int height = img->height;
 
-    Image originalImage = ImageCreate(width, height, img->maxval);
+  Image originalImage = ImageCreate(width, height, img->maxval);
 
-    if (originalImage == NULL) {
-        // Falha na alocação de memória para a imagem original.
-        return;
+  if (originalImage == NULL)
+  {
+    // Falha na alocação de memória para a imagem original.
+    return;
+  }
+
+  // Copie a imagem original para uma imagem temporária.
+  for (int y = 0; y < height; y++)
+  {
+    for (int x = 0; x < width; x++)
+    {
+      uint8 pixel = ImageGetPixel(img, x, y);
+      ImageSetPixel(originalImage, x, y, pixel);
     }
+  }
 
-    // Copie a imagem original para uma imagem temporária.
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            uint8 pixel = ImageGetPixel(img, x, y);
-            ImageSetPixel(originalImage, x, y, pixel);
+  for (int y = 0; y < height; y++)
+  {
+    for (int x = 0; x < width; x++)
+    {
+      int sum = 0;
+      int count = 0;
+
+      for (int j = -dy; j <= dy; j++)
+      {
+        for (int i = -dx; i <= dx; i++)
+        {
+          if (ImageValidPos(originalImage, x + i, y + j))
+          {
+            sum += ImageGetPixel(originalImage, x + i, y + j);
+            count++;
+          }
         }
+      }
     }
-
-    // Aplicando um kernel de desfoque simples (média ponderada)
-    float weight = 1.0 / ((dx * 2 + 1) * (dy * 2 + 1));
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            int sum = 0;
-
-            for (int j = -dy; j <= dy; j++) {
-                for (int i = -dx; i <= dx; i++) {
-                    if (ImageValidPos(originalImage, x + i, y + j)) {
-                        sum += ImageGetPixel(originalImage, x + i, y + j);
-                    }
-                }
-            }
-
-            int blurredPixel = round(weight * sum);
-            ImageSetPixel(img, x, y, blurredPixel);
-        }
-    }
+  }
 }
