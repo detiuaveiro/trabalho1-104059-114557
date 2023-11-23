@@ -601,3 +601,4 @@ void ImageBlur(Image img, int dx, int dy) {
     // Libere a memória alocada para a imagem original
     ImageFree(originalImage);
 }
+
