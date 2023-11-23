@@ -558,48 +558,61 @@ void ImageFree(Image img) {
 }
 
 
-void ImageBlur(Image img, int dx, int dy) {
-    assert(img != NULL);
-    int width = img->width;
-    int height = img->height;
+void ImageBlur(Image img, int dx, int dy)
+{
+  assert(img != NULL);
+  int width = img->width;
+  int height = img->height;
 
-    Image originalImage = ImageCreate(width, height, img->maxval);
+  Image originalImage = ImageCreate(width, height, img->maxval);
 
-    if (originalImage == NULL) {
-        // Falha na alocação de memória para a imagem original.
-        return;
+  if (originalImage == NULL)
+  {
+    // Falha na alocação de memória para a imagem original.
+    return;
+  }
+
+  // Copie a imagem original para uma imagem temporária.
+  for (int y = 0; y < height; y++)
+  {
+    for (int x = 0; x < width; x++)
+    {
+      uint8 pixel = ImageGetPixel(img, x, y);
+      ImageSetPixel(originalImage, x, y, pixel);
     }
+  }
 
-    // Copie a imagem original para uma imagem temporária.
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            uint8 pixel = ImageGetPixel(img, x, y);
-            ImageSetPixel(originalImage, x, y, pixel);
+  for (int y = 0; y < height; y++)
+  {
+    for (int x = 0; x < width; x++)
+    {
+      int sum = 0;
+      int count = 0;
+
+      for (int j = -dy; j <= dy; j++)
+      {
+        for (int i = -dx; i <= dx; i++)
+        {
+          if (ImageValidPos(originalImage, x + i, y + j))
+          {
+            sum += ImageGetPixel(originalImage, x + i, y + j);
+            count++;
+          }
         }
+      }
+
+      // Calculate the average and set the pixel value
+      double avg = (count > 0) ? (sum / count) + 0.5 : 0;
+      if (avg > img->maxval)
+      {
+        avg = img->maxval;
+      }
+      ImageSetPixel(img, x, y, (uint8)avg);
     }
+  }
 
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            int sum = 0;
-            int count = 0;
-
-            for (int j = -dy; j <= dy; j++) {
-                for (int i = -dx; i <= dx; i++) {
-                    if (ImageValidPos(originalImage, x + i, y + j)) {
-                        sum += ImageGetPixel(originalImage, x + i, y + j);
-                        count++;
-                    }
-                }
-            }
-
-            // Calculate the average and set the pixel value
-            uint8 avg = (count > 0) ? (sum / count) + 0.99 : 0;
-            ImageSetPixel(img, x, y, avg);
-        }
-    }
-
-    // Libere a memória alocada para a imagem original
-    ImageFree(originalImage);
+  // Libere a memória alocada para a imagem original
+  ImageFree(originalImage);
 }
 
 
