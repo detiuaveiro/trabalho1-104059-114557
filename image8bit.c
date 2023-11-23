@@ -593,7 +593,7 @@ void ImageBlur(Image img, int dx, int dy) {
             }
 
             // Calculate the average and set the pixel value
-            uint8 avg = (count > 0) ? (sum / count) - 0.5 : 0;
+            uint8 avg = (count > 0) ? (sum / count) + 1 : 0;
             ImageSetPixel(img, x, y, avg);
         }
     }
