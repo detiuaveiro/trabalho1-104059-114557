@@ -546,12 +546,17 @@ int ImageLocateSubImage(Image img1, int *px, int *py, Image img2)
 }
 
 void ImageFree(Image img) {
-    // Liberar a memória alocada para a imagem 'img'
+    // Liberar a memória alocada para os pixels da imagem
+    if (img != NULL && img->pixel != NULL) {
+        free(img->pixel); // Liberar os dados dos pixels da imagem
+    }
+
+    // Liberar a estrutura da imagem
     if (img != NULL) {
-        free(img->data); // Liberar os dados da imagem
-        free(img);       // Liberar a estrutura da imagem
+        free(img); // Liberar a estrutura da imagem
     }
 }
+
 
 void ImageBlur(Image img, int dx, int dy) {
     assert(img != NULL);
