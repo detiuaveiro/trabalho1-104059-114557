@@ -586,13 +586,14 @@ void ImageBlur(Image img, int dx, int dy) {
             for (int j = -dy; j <= dy; j++) {
                 for (int i = -dx; i <= dx; i++) {
                     if (ImageValidPos(originalImage, x + i, y + j)) {
-                        sum += ImageGetPixel(originalImage, x + i, y + j);
+                        uint8 pixel = ImageGetPixel(originalImage, x + i, y + j);
+                        sum += pixel;
                         count++;
                     }
                 }
             }
 
-            // Calculate the average and set the pixel value
+            // Calculate the weighted average and set the pixel value
             uint8 avg = (count > 0) ? (sum / count) : 0;
             ImageSetPixel(img, x, y, avg);
         }
@@ -601,6 +602,7 @@ void ImageBlur(Image img, int dx, int dy) {
     // Libere a memória alocada para a imagem original
     ImageFree(originalImage);
 }
+
 
 
     
