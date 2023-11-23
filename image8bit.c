@@ -8,7 +8,7 @@
 #include "instrumentation.h"
 
 const uint8 PixMax = 255;
-
+// ola :---D
 // Internal structure for storing 8-bit graymap images
 struct image
 {
