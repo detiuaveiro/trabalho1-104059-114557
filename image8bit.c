@@ -602,7 +602,7 @@ void ImageBlur(Image img, int dx, int dy)
       }
 
       // Calculate the average and set the pixel value 
-      double avg = (count > 0) ? (sum / count) + 0.5 : 0;
+      double avg = (count > 0) ? ((double)sum / (double)count) + 0.5 : 0;
       if (avg > img->maxval)
       {
         avg = img->maxval;
